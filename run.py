@@ -16,6 +16,7 @@ import os
 import sys
 
 from agent import map_landscape
+from dashboard import open_dashboard, write_dashboard
 from schema import LandscapeResult
 
 
@@ -85,6 +86,7 @@ def main() -> int:
     parser.add_argument("--count", type=int, default=None, help="Target number of candidates (default 30)")
     parser.add_argument("--model", default=None, help="Override LLM_MODEL, e.g. openai:gpt-4o or anthropic:claude-sonnet-5")
     parser.add_argument("--out-dir", default="output")
+    parser.add_argument("--no-dashboard", action="store_true", help="Skip writing/opening the HTML dashboard")
     args = parser.parse_args()
 
     if not args.criteria:
@@ -96,6 +98,11 @@ def main() -> int:
     _print_result(result)
     _write_artifacts(result, args.out_dir)
     print(f"\nWrote {args.out_dir}/landscape_table.md, exclusions.md, reconciliation.md")
+
+    if not args.no_dashboard:
+        dashboard_path = write_dashboard(result, args.out_dir)
+        print(f"Wrote {dashboard_path}")
+        open_dashboard(dashboard_path)
     return 0
 
 

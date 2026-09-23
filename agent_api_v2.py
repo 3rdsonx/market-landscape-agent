@@ -22,6 +22,7 @@ from dotenv import load_dotenv
 from nimble_python import Nimble
 
 from config import SKILL
+from dashboard import open_dashboard, write_dashboard
 from landscape_model import build_result
 from schema import PublishedEstimate, VendorCandidate
 
@@ -128,6 +129,7 @@ def main() -> int:
     parser.add_argument("--poll-interval", type=int, default=20)
     parser.add_argument("--out-dir", default="output")
     parser.add_argument("--json", metavar="PATH", default=None)
+    parser.add_argument("--no-dashboard", action="store_true", help="Skip writing/opening the HTML dashboard")
     args = parser.parse_args()
     if not args.criteria:
         parser.error("supply at least one --criteria")
@@ -147,6 +149,10 @@ def main() -> int:
     )
     _print_result(result)
     _write_artifacts(result, args.out_dir)
+    if not args.no_dashboard:
+        dashboard_path = write_dashboard(result, args.out_dir)
+        print(f"Wrote {dashboard_path}")
+        open_dashboard(dashboard_path)
     if args.json:
         with open(args.json, "w") as fh:
             json.dump(raw, fh, indent=2, default=str)

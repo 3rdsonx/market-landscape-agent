@@ -53,6 +53,11 @@ uv run python agent_api_v2.py "LLM observability and evaluation platforms" \
 provider-agnostic via `init_chat_model`: `openai:gpt-5.1` (default),
 `anthropic:claude-sonnet-5`, ... Install the matching provider package.
 
+Both entrypoints also write `dashboard.html` to `./output` (or `--out-dir`) and open it
+in the default browser (skip with `--no-dashboard`): the bottom-up range plotted on a
+log scale against every published estimate, colored by whether it's flagged, plus the
+full included/excluded vendor tables.
+
 ## Files
 
 - `schema.py` - `VendorCandidate`, `PublishedEstimate`, `BottomUpEstimate`,
@@ -64,6 +69,10 @@ provider-agnostic via `init_chat_model`: `openai:gpt-5.1` (default),
   full-content per vendor domain) and its `nimble_search` tool.
 - `agent_api_v2.py` - the Pattern B driver.
 - `run.py` - Pattern A CLI and the shared artifact writer.
+- `dashboard.py` - writes the self-contained `dashboard.html` artifact both entrypoints
+  open after a run. Log scale because published estimates run 9x-112x the bottom-up
+  midpoint in the real Pattern B run below; a linear axis would make the bottom-up range
+  invisible next to them.
 
 ## Example
 
