@@ -67,21 +67,22 @@ provider-agnostic via `init_chat_model`: `openai:gpt-5.1` (default),
 
 ## Example
 
-`examples/` - a real run on "LLM observability and evaluation platforms": 13 vendors
-included (LangSmith, Langfuse, Arize AI, Braintrust, Patronus AI, Galileo AI, Helicone,
-Fiddler AI, and others), 12 candidates excluded with specific reasons (general APM
-vendors like Datadog, Honeycomb, and Elastic Observability correctly separated from
-dedicated LLM-observability products, a parked domain flagged rather than assumed
-active, duplicate/gateway-only entries caught), and a bottom-up size estimate ($0 to
-$20.75M, confidence: low, since almost none of these early-stage vendors disclose
-revenue).
+`examples/` (Pattern A) - a real run on "LLM observability and evaluation platforms": 13
+vendors included, 12 excluded with specific reasons (general APM vendors like Datadog,
+Honeycomb, and Elastic Observability correctly separated from dedicated
+LLM-observability products, a parked domain flagged rather than assumed active), and a
+bottom-up estimate of $0 to $20.75M (confidence: low). The reconciliation step found one
+published figure, MarketsandMarkets' "Observability Tools and Platforms" market at
+$11.91B, and flagged it as far larger than the bottom-up estimate: that figure sizes the
+entire parent observability category, not this narrow sub-segment, so the gap is the
+finding, not a bug.
 
-The reconciliation step found a real published figure, MarketsandMarkets' "Observability
-Tools and Platforms" market at $11.91B, and correctly flagged it as wildly larger than
-the bottom-up estimate (over 1000x). That is not a bug: the published figure sizes the
-entire parent observability category (APM, logs, infra monitoring, and more), not the
-narrow LLM-observability sub-segment this run mapped, and no public report sizes that
-sub-segment specifically yet. The gap itself is the finding: it shows how early and
-under-measured this specific niche still is relative to its parent category, which is
-exactly the kind of disagreement `landscape_model.reconcile` is built to surface rather
-than paper over.
+`examples/pattern_b/` (Agent API) - a richer real run against the same prompt: 31
+vendors included, with exclusion reasoning sharp enough to track acquisitions correctly
+(Arize is now Dynatrace-owned, Galileo is now Cisco-owned, both treated as their own
+dedicated entities rather than folded into the acquirer's exclusion). Bottom-up estimate
+widened to $330K to $249.4M (confidence: medium). The sizing pass surfaced eight real
+published market-size estimates from different research firms, every one flagged as 9x
+to 112x the bottom-up midpoint, a genuine illustration of how little published
+market-sizing agrees with itself in an emerging category, exactly the kind of
+disagreement `landscape_model.reconcile` exists to surface rather than average away.
