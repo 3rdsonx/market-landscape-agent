@@ -96,11 +96,16 @@ def _make_search_tool():
             kwargs["start_date"] = start_date
         elif time_range:
             kwargs["time_range"] = time_range
+        scope = f" [{', '.join(include_domains)}]" if include_domains else ""
+        print(f"  nimble search: {query!r}{scope}", flush=True)
         try:
             resp = client.search(**kwargs)
         except Exception as exc:
+            print(f"    -> error: {exc}", flush=True)
             return [{"error": f"{type(exc).__name__}: {exc}"}]
-        return _compact(resp.results, query, full_content, CONTENT_CHAR_CAP)
+        out = _compact(resp.results, query, full_content, CONTENT_CHAR_CAP)
+        print(f"    -> {len(out)} result(s)", flush=True)
+        return out
 
     return nimble_search
 
@@ -126,6 +131,7 @@ def map_landscape(
 ) -> LandscapeResult:
     today = dt.date.today().isoformat()
     agent = build_agent(category, inclusion_criteria, target_count, model, today)
+    print(f"Starting agent: mapping the {category} category...", flush=True)
     result = agent.invoke(
         {
             "messages": [
@@ -139,5 +145,6 @@ def map_landscape(
         },
         {"recursion_limit": DEFAULT_RECURSION_LIMIT},
     )
+    print("Agent finished mapping the category. Computing bottom-up estimate...", flush=True)
     batch: LandscapeExtractionBatch = result["structured_response"]
     return build_result(batch.category, batch.inclusion_criteria, batch.candidates, batch.published_estimates, today)
