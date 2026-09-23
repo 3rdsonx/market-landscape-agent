@@ -149,7 +149,7 @@ _TEMPLATE = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Market landscape &mdash; {category}</title>
 <style>
-  .viz-root {{
+  :root {{
     color-scheme: light;
     --surface-1:      #fcfcfb;
     --page:           #f9f9f7;
@@ -164,7 +164,7 @@ _TEMPLATE = """<!doctype html>
     --status-critical-text: #a52323;
   }}
   @media (prefers-color-scheme: dark) {{
-    :root:where(:not([data-theme="light"])) .viz-root {{
+    :root:where(:not([data-theme="light"])) {{
       color-scheme: dark;
       --surface-1:      #1a1a19;
       --page:           #0d0d0d;
@@ -178,6 +178,20 @@ _TEMPLATE = """<!doctype html>
       --status-critical: #e66767;
       --status-critical-text: #ffb3b3;
     }}
+  }}
+  :root[data-theme="dark"] {{
+    color-scheme: dark;
+    --surface-1:      #1a1a19;
+    --page:           #0d0d0d;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --grid:           #2c2c2a;
+    --border:         rgba(255,255,255,0.10);
+    --series-1:       #3987e5;
+    --status-good:    #0ca30c;
+    --status-critical: #e66767;
+    --status-critical-text: #ffb3b3;
   }}
   * {{ box-sizing: border-box; }}
   html, body {{ margin: 0; background: var(--page); }}
